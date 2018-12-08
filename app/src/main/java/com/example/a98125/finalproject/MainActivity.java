@@ -19,6 +19,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     private TextView mDisplayDate;
     private DatePickerDialog.OnDateSetListener mDateSetListener;
+    private TextView mEnterNumber;
 
 
     @Override
@@ -50,8 +51,10 @@ public class MainActivity extends AppCompatActivity {
                 mDisplayDate.setText(date);
             }
         };
-        Button btn = (Button) findViewById(R.id.enter);
-        btn.setOnClickListener(new View.OnClickListener() {
+
+        Button btn1 = (Button) findViewById(R.id.enter1);
+
+        btn1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //API???
@@ -61,5 +64,7 @@ public class MainActivity extends AppCompatActivity {
                 textView.setText("We haven't finished this app yet!");
             }
         });
+         
     }
+
 }
