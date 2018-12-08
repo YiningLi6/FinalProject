@@ -11,15 +11,26 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.TextView;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
 import java.util.Calendar;
 
 
 public class MainActivity extends AppCompatActivity {
 
-    private static final String TAG = "MainActivity";
+    private static final String TAG = MainActivity.class.getName();
     private TextView mDisplayDate;
     private DatePickerDialog.OnDateSetListener mDateSetListener;
     private TextView mEnterNumber;
+    private Button btnSendRequest1;
+    private RequestQueue mRequestQueue1;
+    private StringRequest stringRequest1;
+    private String url = "http://www.mocky.io/v2/5c0b2e8a2f0000550013eba8";
 
 
     @Override
@@ -51,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
                 mDisplayDate.setText(date);
             }
         };
-
+        /**
         Button btn1 = (Button) findViewById(R.id.enter1);
 
         btn1.setOnClickListener(new View.OnClickListener() {
@@ -64,7 +75,37 @@ public class MainActivity extends AppCompatActivity {
                 textView.setText("We haven't finished this app yet!");
             }
         });
-         
+        */
+         btnSendRequest1 = (Button) findViewById(R.id.enter1);
+         btnSendRequest1.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View v) {
+                 //send response and print the response using volley library
+                 sendRequestAndPrintReponse1();
+             }
+         });
+    }
+    private void sendRequestAndPrintReponse1() {
+        mRequestQueue1 = Volley.newRequestQueue(this);
+        //enter1 ??? enterNumber???
+        /*TextView suffix = findViewById(R.id.enterNumber);
+        if (suffix == null || suffix.length() == 0) {
+            return ...???
+        }
+        url = "http://numbersapi.com/" + suffix;
+        */
+        stringRequest1 = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.i(TAG, "Response : " + response.toString());
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.i(TAG, "Error : " + error.toString());
+            }
+        });
+        mRequestQueue1.add(stringRequest1);
     }
 
 }
