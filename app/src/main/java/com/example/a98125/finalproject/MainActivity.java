@@ -5,10 +5,12 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Editable;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -36,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
     private RequestQueue mRequestQueue1;
     private StringRequest stringRequest1;
     private String url = "http://numbersapi.com/";
+
 
 
     @Override
@@ -77,13 +80,15 @@ public class MainActivity extends AppCompatActivity {
 
 
                 TextView textView = (TextView) findViewById(R.id.outputDisplay);
-                TextView suffix = findViewById(R.id.enterNumber);
-                url = "http://numbersapi.com/" + suffix;
-                textView.setText(url);
-                sendRequestAndPrintReponse1(textView);
+                EditText editText = (EditText) findViewById(R.id.enterNumber);
+                //TextView suffix = findViewById(R.id.enterNumber);
+                //url = "http://numbersapi.com/" + suffix;
+                //textView.setText(url);
+                sendRequestAndPrintReponse1(textView, editText);
 
             }
         });
+
     }
         /*
          btnSendRequest1 = (Button) findViewById(R.id.enter1);
@@ -96,10 +101,12 @@ public class MainActivity extends AppCompatActivity {
          });
     }
     */
-    private void sendRequestAndPrintReponse1(final TextView textView) {
+    private void sendRequestAndPrintReponse1(final TextView textView, final EditText editText) {
+       String value = editText.getText().toString();
+       int findValue = Integer.parseInt(value);
         JsonObjectRequest request = new JsonObjectRequest(
                 Request.Method.GET,
-                "http://numbersapi.com/random/year?json",
+                "http://numbersapi.com/" + findValue + "/trivia?json",
                 null,
                 new Response.Listener<JSONObject>() {
                     @Override
