@@ -15,28 +15,34 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+
+import org.json.JSONObject;
 
 import java.util.Calendar;
 
 
 public class MainActivity extends AppCompatActivity {
 
-    private static final String TAG = MainActivity.class.getName();
+//    private static final String TAG = MainActivity.class.getName();
+    private static final String TAG = "Final Project";
+    private static final String REQUESTTAG = "string request first";
     private TextView mDisplayDate;
     private DatePickerDialog.OnDateSetListener mDateSetListener;
     private TextView mEnterNumber;
     private Button btnSendRequest1;
     private RequestQueue mRequestQueue1;
     private StringRequest stringRequest1;
-    private String url = "http://www.mocky.io/v2/5c0b2e8a2f0000550013eba8";
+    private String url = "http://numbersapi.com/";
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mRequestQueue1 = Volley.newRequestQueue(this);
         mDisplayDate = (TextView) findViewById(R.id.tvDate);
         mDisplayDate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -57,25 +63,29 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                 month = month + 1;
-                Log.d(TAG,"onDateSet: date:" + month + "/" + dayOfMonth);
+                Log.d(TAG, "onDateSet: date:" + month + "/" + dayOfMonth);
                 String date = month + "/" + dayOfMonth;
                 mDisplayDate.setText(date);
             }
         };
-        /**
+
         Button btn1 = (Button) findViewById(R.id.enter1);
 
         btn1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //API???
-                //here we got access to the textview
+
+
                 TextView textView = (TextView) findViewById(R.id.outputDisplay);
-                //???
-                textView.setText("We haven't finished this app yet!");
+                TextView suffix = findViewById(R.id.enterNumber);
+                url = "http://numbersapi.com/" + suffix;
+                textView.setText(url);
+                sendRequestAndPrintReponse1(textView);
+
             }
         });
-        */
+    }
+        /*
          btnSendRequest1 = (Button) findViewById(R.id.enter1);
          btnSendRequest1.setOnClickListener(new View.OnClickListener() {
              @Override
@@ -85,27 +95,69 @@ public class MainActivity extends AppCompatActivity {
              }
          });
     }
-    private void sendRequestAndPrintReponse1() {
-        mRequestQueue1 = Volley.newRequestQueue(this);
-        //enter1 ??? enterNumber???
-        /*TextView suffix = findViewById(R.id.enterNumber);
-        if (suffix == null || suffix.length() == 0) {
-            return ...???
-        }
-        url = "http://numbersapi.com/" + suffix;
-        */
-        stringRequest1 = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                Log.i(TAG, "Response : " + response.toString());
-            }
-        }, new Response.ErrorListener() {
+    */
+    private void sendRequestAndPrintReponse1(final TextView textView) {
+        JsonObjectRequest request = new JsonObjectRequest(
+                Request.Method.GET,
+                "http://numbersapi.com/random/year?json",
+                null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Log.d(TAG, "Received response.");
+                        //textView.setText("Got response, " + response.toString());
+                        try {
+                            String string = response.getString("text");
+                            textView.setText(string);
+                        } catch (Exception e) {
+
+                        }
+                    }
+                }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.i(TAG, "Error : " + error.toString());
+                Log.e(TAG, "error.");
+                textView.setText("Got error, ");
             }
         });
-        mRequestQueue1.add(stringRequest1);
+        mRequestQueue1.add(request);
+
     }
+
+
+
+
+
+//
+//        mRequestQueue1 = Volley.newRequestQueue(this);
+//        //enter1 ??? enterNumber???
+//        TextView suffix = findViewById(R.id.enterNumber);
+//
+//        if (suffix == null || suffix.length() == 0) {
+//            return ...???
+//        }
+//
+//        url = "http://numbersapi.com/" + suffix;
+//        stringRequest1 = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+//            @Override
+//            public void onResponse(String response) {
+//                Log.i(TAG, "Response : " + response.toString());
+//            }
+//        }, new Response.ErrorListener() {
+//            @Override
+//            public void onErrorResponse(VolleyError error) {
+//                Log.i(TAG, "Error : " + error.toString());
+//            }
+//        });
+//        stringRequest1.setTag(REQUESTTAG);
+//        mRequestQueue1.add(stringRequest1);
+//    }
+//    @Override
+//    protected void onStop() {
+//        super.onStop();
+//        if (mRequestQueue1 != null) {
+//            mRequestQueue1.cancelAll(REQUESTTAG);
+//        }
+//    }
 
 }
