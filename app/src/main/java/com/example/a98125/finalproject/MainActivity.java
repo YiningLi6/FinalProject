@@ -9,6 +9,7 @@ import android.text.Editable;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -18,7 +19,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
-
+import com.android.volley.toolbox.Volley;
 
 import org.json.JSONObject;
 
@@ -26,8 +27,6 @@ import org.json.JSONObject;
 
 
 public class MainActivity extends AppCompatActivity {
-
-    //    private static final String TAG = MainActivity.class.getName();
     private static final String TAG = "Final Project";
     private static final String REQUESTTAG = "string request first";
     private TextView mDisplayDate;
@@ -43,34 +42,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        /*
+
         mRequestQueue1 = Volley.newRequestQueue(this);
-        mDisplayDate = (TextView) findViewById(R.id.tvDate);
-        mDisplayDate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Calendar cal = Calendar.getInstance();
-                int year = cal.get(Calendar.YEAR);
-                int month = cal.get(Calendar.MONTH);
-                int day = cal.get(Calendar.DAY_OF_MONTH);
-                DatePickerDialog dialog = new DatePickerDialog(
-                        MainActivity.this,
-                        mDateSetListener,
-                        year, month, day);
-                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                dialog.show();
-            }
-        });
-        mDateSetListener = new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                month = month + 1;
-                Log.d(TAG, "onDateSet: date:" + month + "/" + dayOfMonth);
-                String date = month + "/" + dayOfMonth;
-                mDisplayDate.setText(date);
-            }
-        };
-        */
+
+
 
         Button btn1 = (Button) findViewById(R.id.enter1);
 
@@ -81,9 +56,7 @@ public class MainActivity extends AppCompatActivity {
 
                 TextView textView = (TextView) findViewById(R.id.outputDisplay);
                 EditText editText = (EditText) findViewById(R.id.enterNumber);
-                //TextView suffix = findViewById(R.id.enterNumber);
-                //url = "http://numbersapi.com/" + suffix;
-                //textView.setText(url);
+
                 sendRequestAndPrintReponse1(textView, editText);
 
             }
@@ -91,29 +64,22 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    /*
-     btnSendRequest1 = (Button) findViewById(R.id.enter1);
-     btnSendRequest1.setOnClickListener(new View.OnClickListener() {
-         @Override
-         public void onClick(View v) {
-             //send response and print the response using volley library
-             sendRequestAndPrintReponse1();
-         }
-     });
-}
-*/
     private void sendRequestAndPrintReponse1(final TextView textView, final EditText editText) {
-        String value = editText.getText().toString();
-        int findValue = Integer.parseInt(value);
+        String value;
+        if (editText == null || editText.length() == 0) {
+            value = "random";
+        } else {
+            value = editText.getText().toString();
+        }
+        //int findValue = Integer.parseInt(value);
         JsonObjectRequest request = new JsonObjectRequest(
                 Request.Method.GET,
-                "http://numbersapi.com/" + findValue + "/trivia?json",
+                "http://numbersapi.com/" + value + "/trivia?json",
                 null,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
                         Log.d(TAG, "Received response.");
-                        //textView.setText("Got response, " + response.toString());
                         try {
                             String string = response.getString("text");
                             textView.setText(string);
@@ -129,6 +95,5 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         mRequestQueue1.add(request);
-
     }
 }
