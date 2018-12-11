@@ -19,16 +19,16 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
+
 
 import org.json.JSONObject;
 
-import java.util.Calendar;
+
 
 
 public class MainActivity extends AppCompatActivity {
 
-//    private static final String TAG = MainActivity.class.getName();
+    //    private static final String TAG = MainActivity.class.getName();
     private static final String TAG = "Final Project";
     private static final String REQUESTTAG = "string request first";
     private TextView mDisplayDate;
@@ -40,11 +40,11 @@ public class MainActivity extends AppCompatActivity {
     private String url = "http://numbersapi.com/";
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        /*
         mRequestQueue1 = Volley.newRequestQueue(this);
         mDisplayDate = (TextView) findViewById(R.id.tvDate);
         mDisplayDate.setOnClickListener(new View.OnClickListener() {
@@ -71,6 +71,7 @@ public class MainActivity extends AppCompatActivity {
                 mDisplayDate.setText(date);
             }
         };
+        */
 
         Button btn1 = (Button) findViewById(R.id.enter1);
 
@@ -90,20 +91,21 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
-        /*
-         btnSendRequest1 = (Button) findViewById(R.id.enter1);
-         btnSendRequest1.setOnClickListener(new View.OnClickListener() {
-             @Override
-             public void onClick(View v) {
-                 //send response and print the response using volley library
-                 sendRequestAndPrintReponse1();
-             }
-         });
-    }
-    */
+
+    /*
+     btnSendRequest1 = (Button) findViewById(R.id.enter1);
+     btnSendRequest1.setOnClickListener(new View.OnClickListener() {
+         @Override
+         public void onClick(View v) {
+             //send response and print the response using volley library
+             sendRequestAndPrintReponse1();
+         }
+     });
+}
+*/
     private void sendRequestAndPrintReponse1(final TextView textView, final EditText editText) {
-       String value = editText.getText().toString();
-       int findValue = Integer.parseInt(value);
+        String value = editText.getText().toString();
+        int findValue = Integer.parseInt(value);
         JsonObjectRequest request = new JsonObjectRequest(
                 Request.Method.GET,
                 "http://numbersapi.com/" + findValue + "/trivia?json",
@@ -130,41 +132,4 @@ public class MainActivity extends AppCompatActivity {
         mRequestQueue1.add(request);
 
     }
-
-
-
-
-
-//
-//        mRequestQueue1 = Volley.newRequestQueue(this);
-//        //enter1 ??? enterNumber???
-//        TextView suffix = findViewById(R.id.enterNumber);
-//
-//        if (suffix == null || suffix.length() == 0) {
-//            return ...???
-//        }
-//
-//        url = "http://numbersapi.com/" + suffix;
-//        stringRequest1 = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
-//            @Override
-//            public void onResponse(String response) {
-//                Log.i(TAG, "Response : " + response.toString());
-//            }
-//        }, new Response.ErrorListener() {
-//            @Override
-//            public void onErrorResponse(VolleyError error) {
-//                Log.i(TAG, "Error : " + error.toString());
-//            }
-//        });
-//        stringRequest1.setTag(REQUESTTAG);
-//        mRequestQueue1.add(stringRequest1);
-//    }
-//    @Override
-//    protected void onStop() {
-//        super.onStop();
-//        if (mRequestQueue1 != null) {
-//            mRequestQueue1.cancelAll(REQUESTTAG);
-//        }
-//    }
-
 }
